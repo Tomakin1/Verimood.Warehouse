@@ -1,0 +1,6 @@
+@Verimood.Warehouse.Api_HostAddress = http://localhost:5240
+
+GET {{Verimood.Warehouse.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
