@@ -1,0 +1,30 @@
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Verimood.Warehouse.Application.Services.Auth.Interfaces;
+using Verimood.Warehouse.Application.Services.User.Interfaces;
+using Verimood.Warehouse.Infrastructure.Services;
+using Verimood.Warehouse.Infrastructure.Settings.JWT;
+
+namespace Verimood.Warehouse.Infrastructure;
+
+public static class Registration
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    {
+        services.AddServices()
+            .AddJwtAuth()
+            .AddHttpContextAccessor();
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<ITokenService,TokenService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IUserAccountService, UserAccountService>();
+
+
+        return services;
+    }
+}

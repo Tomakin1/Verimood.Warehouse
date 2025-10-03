@@ -6,8 +6,8 @@ namespace Verimood.Warehouse.Application.Services.User.Interfaces;
 
 public interface IUserService
 {
-    Task<BaseResponse<object>> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken); // Admin tarafından depoya yeni kullanıcı ekleme
-    Task<BaseResponse<object>> UpdateAsync(UpdateUserDto dto, CancellationToken cancellationToken); // Admin tarafından çalışan güncelleme
+    Task<BaseResponse<Guid>> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken); // Admin tarafından depoya yeni kullanıcı ekleme
+    Task<BaseResponse<object>> UpdateAsync(Guid Id,UpdateUserDto dto, CancellationToken cancellationToken); // Admin tarafından çalışan güncelleme
     Task<BaseResponse<object>> DeleteAsync(Guid Id, CancellationToken cancellationToken); // Admin tarafından çalışan silme
     Task<BaseResponse<GetUserDto>> GetByIdAsync(Guid Id, CancellationToken cancellationToken); // çalışan bilgisi getirme
     Task<BaseResponse<PaginationResponse<GetUserDto>>> GetAllPaginatedAsync(PaginationRequest request, CancellationToken cancellationToken); // Sistemdeki tüm çalışanları paginate ile getirme

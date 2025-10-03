@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36408.4 d17.14
+VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -18,6 +18,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Persistence", "Infrastructure\Verimood.Warehouse.Persistence\Verimood.Warehouse.Persistence.csproj", "{11486BBE-0DBB-41B9-A305-6DBEC420434C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Api", "Presentation\Verimood.Warehouse.Api\Verimood.Warehouse.Api.csproj", "{D7F2F431-6EB6-434D-B97D-52B1755B58D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{2D361C04-B0BC-4769-8BBF-330F6BE3B0BB}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yaml = docker-compose.yaml
+		Migrations.Txt = Migrations.Txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

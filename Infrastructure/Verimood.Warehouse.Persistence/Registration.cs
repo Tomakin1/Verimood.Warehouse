@@ -113,8 +113,7 @@ public static class Registration
 
     public static IApplicationBuilder UsePersistenceLayer(this IApplicationBuilder app)
     {
-        app.UseCorsPolicy()
-           .UseAuthentication();
+        app.UseCorsPolicy();
 
         app.ApplicationServices.StartDbInitializeAsync().Wait();
 

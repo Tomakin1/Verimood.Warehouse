@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Verimood.Warehouse.Application\Verimood.Warehouse.Application.csproj" />
     <ProjectReference Include="..\..\Core\Verimood.Warehouse.Domain\Verimood.Warehouse.Domain.csproj" />
   </ItemGroup>
 

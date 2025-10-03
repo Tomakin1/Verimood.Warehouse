@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Verimood.Warehouse.Application.Services.Auth.Settings;
 using Verimood.Warehouse.Domain.Entities;
 
 namespace Verimood.Warehouse.Persistence.Initialization;
@@ -10,9 +11,6 @@ internal class ApplicationDbSeeder
     private readonly ILogger<ApplicationDbSeeder> _logger;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
-    private const string Admin = "Admin";
-    private const string Employee = "Employee";
-    private readonly List<string> roles = new List<string> { Admin, Employee };
 
     public ApplicationDbSeeder(UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<ApplicationDbSeeder> logger)
     {
@@ -24,14 +22,14 @@ internal class ApplicationDbSeeder
     public async Task SeedDatabaseAsync(CancellationToken cancellationToken)
     {
         await SeedRolesAsync(cancellationToken); // Program çalıştığında rolleri otomatik db'ye ekler
-        await SeedAdminUserAsync(cancellationToken); // Program çalıştığında Admin User dbye otomatik eklenir
+        await SeedAdminUserAsync(); // Program çalıştığında Admin User dbye otomatik eklenir
     }
 
     private async Task SeedRolesAsync(CancellationToken cancellationToken)
     {
         var dbRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync(cancellationToken);
 
-        foreach (var roleName in roles)
+        foreach (var roleName in AppRoles.DefaultRoles)
         {
             if (!dbRoles.Contains(roleName))
             {
@@ -45,7 +43,7 @@ internal class ApplicationDbSeeder
         }
     }
 
-    private async Task SeedAdminUserAsync(CancellationToken cancellationToken)
+    private async Task SeedAdminUserAsync()
     {
         var email = "admin@verimood.com";
         var userName = "adminVerimood";
@@ -56,7 +54,7 @@ internal class ApplicationDbSeeder
         {
             adminUser = new User
             {
-                FirstName = "Admin",
+                FirstName = $"{nameof(AppRoles.Admin)}",
                 LastName = "VERIMOOD",
                 Email = email,
                 UserName = userName,
@@ -67,17 +65,17 @@ internal class ApplicationDbSeeder
             var result = await _userManager.CreateAsync(adminUser, pwd);
             if (!result.Succeeded)
             {
-                _logger.LogWarning("Admin user could not be created. Errors: {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
+                _logger.LogWarning($"{nameof(AppRoles.Admin)} user could not be created. Errors :  {string.Join(", ", result.Errors.Select(e => e.Description))}");
                 return;
             }
         }
 
-        if (!await _userManager.IsInRoleAsync(adminUser, Admin))
+        if (!await _userManager.IsInRoleAsync(adminUser, AppRoles.Admin))
         {
-            var roleResult = await _userManager.AddToRoleAsync(adminUser, Admin);
+            var roleResult = await _userManager.AddToRoleAsync(adminUser, AppRoles.Admin);
             if (!roleResult.Succeeded)
             {
-                _logger.LogWarning("Admin user could not be added to '{Role}' role.", Admin);
+                _logger.LogWarning($"{nameof(AppRoles.Admin)} user could not be added to '{AppRoles.Admin}' role.");
             }
         }
     }

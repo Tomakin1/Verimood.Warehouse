@@ -1,0 +1,16 @@
+Verimood.Warehouse.Api Terminal Migration: 
+
+dotnet ef migrations add InitialCreate --project ../../Infrastructure/Verimood.Warehouse.Persistence  --context ApplicationDbContext
+
+-----------
+
+Verimood.Warehouse.Api Terminal Migration silme: 
+
+dotnet ef migrations remove --project ../../Infrastructure/Verimood.Warehouse.Persistence  --context ApplicationDbContext
+
+--------------
+
+
+Verimood.Warehouse.Api Terminal Database Update: 
+
+dotnet ef database update --project ../../Infrastructure/Verimood.Warehouse.Persistence  --context ApplicationDbContext
