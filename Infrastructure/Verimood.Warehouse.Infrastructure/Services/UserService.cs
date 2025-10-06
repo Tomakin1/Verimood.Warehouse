@@ -16,24 +16,31 @@ public class UserService : IUserService
     private readonly ICurrentUserService _currentUser;
     private readonly UserManager<User> _userManager;
     private readonly IReadRepository<UserNRole> _userNRoleRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IReadRepository<UserNRole> _userNRoleReadRepository;
 
     public UserService(
         IWriteRepository<User> userWriteRepository,
         IReadRepository<User> userReadRepository,
         ICurrentUserService currentUser,
         UserManager<User> userManager,
-        IReadRepository<UserNRole> userNRoleRepository)
+        IReadRepository<UserNRole> userNRoleRepository,
+        IUserRepository userRepository,
+        IReadRepository<UserNRole> userNRoleReadRepository
+
+        )
     {
         _userWriteRepository = userWriteRepository;
         _userReadRepository = userReadRepository;
         _currentUser = currentUser;
         _userManager = userManager;
         _userNRoleRepository = userNRoleRepository;
+        _userRepository = userRepository;
+        _userNRoleReadRepository = userNRoleReadRepository;
     }
 
     public async Task<BaseResponse<object>> ActivateAsync(Guid Id, CancellationToken cancellationToken)
     {
-        AppRoles.CheckUserIsAdmin(_currentUser);
 
         var user = await _userReadRepository.GetByIdAsync(Id, cancellationToken);
 
@@ -51,12 +58,11 @@ public class UserService : IUserService
             return BaseResponse<object>.ErrorResponse("An error occurred while updating the user", 500);
         }
 
-        return BaseResponse<object>.SuccessResponse(null,204,null);
+        return BaseResponse<object>.SuccessResponse(null, 204, null);
     }
 
     public async Task<BaseResponse<Guid>> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken)
     {
-        AppRoles.CheckUserIsAdmin(_currentUser);
 
         var existingUser = await _userManager.FindByEmailAsync(dto.Email);
         if (existingUser is not null)
@@ -87,8 +93,6 @@ public class UserService : IUserService
     public async Task<BaseResponse<object>> DeactivateAsync(Guid Id, CancellationToken cancellationToken)
     {
 
-        AppRoles.CheckUserIsAdmin(_currentUser);
-
         var user = await _userReadRepository.GetByIdAsync(Id, cancellationToken);
 
         if (user is null)
@@ -108,7 +112,6 @@ public class UserService : IUserService
 
     public async Task<BaseResponse<object>> DeleteAsync(Guid Id, CancellationToken cancellationToken)
     {
-        AppRoles.CheckUserIsAdmin(_currentUser);
 
         var user = await _userReadRepository.GetByIdAsync(Id, cancellationToken);
 
@@ -155,7 +158,7 @@ public class UserService : IUserService
             Page = request.Page,
             PageSize = request.PageSize,
             TotalCount = totalCount
-        },200,null);
+        }, 200, null);
     }
 
     public async Task<BaseResponse<GetUserDto>> GetByIdAsync(Guid Id, CancellationToken cancellationToken)
@@ -169,13 +172,11 @@ public class UserService : IUserService
         }
 
 
-        return BaseResponse<GetUserDto>.SuccessResponse(MapToGetUserDto(user),200,null);
+        return BaseResponse<GetUserDto>.SuccessResponse(MapToGetUserDto(user), 200, null);
     }
 
     public async Task<BaseResponse<List<GetRoleDto>>> GetRolesAsync(Guid Id, CancellationToken cancellationToken)
     {
-        AppRoles.CheckUserIsAdmin(_currentUser);
-
         var user = await _userReadRepository.GetByIdAsync(Id, cancellationToken);
 
         if (user is null)
@@ -183,7 +184,7 @@ public class UserService : IUserService
             return BaseResponse<List<GetRoleDto>>.ErrorResponse("User not found", 404);
         }
 
-        var userRoles = await _userNRoleRepository.GetAllByFilterAsync([x=>x.UserId == Id],cancellationToken,x=>x.Role);
+        var userRoles = await _userNRoleRepository.GetAllByFilterAsync([x => x.UserId == Id], cancellationToken, x => x.Role);
 
         if (userRoles is null || !userRoles.Any())
         {
@@ -199,16 +200,53 @@ public class UserService : IUserService
         }).ToList(), 200);
     }
 
-    public async Task<BaseResponse<object>> UpdateAsync(Guid Id,UpdateUserDto dto, CancellationToken cancellationToken)
+    public async Task<BaseResponse<PaginationResponse<GetUserDto>>> SearchAsync(SearchFilterUserDto dto, CancellationToken cancellationToken)
     {
-        AppRoles.CheckUserIsAdmin(_currentUser);
+        var response = await _userRepository.SearchAsync(
+            dto.Page,
+            dto.PageSize,
+            cancellationToken,
+            dto.SearchTerm,
+            dto.IsActive
+            );
 
+        var totalCount = response.totalCount;
+        var users = response.users;
+
+        if (users is null || !users.Any())
+        {
+            return BaseResponse<PaginationResponse<GetUserDto>>.SuccessResponse(new PaginationResponse<GetUserDto>
+            {
+                Items = new List<GetUserDto>(),
+                Page = dto.Page,
+                PageSize = dto.PageSize,
+                TotalCount = totalCount
+            }, 200, "Users Not found");
+        }
+
+        return BaseResponse<PaginationResponse<GetUserDto>>.SuccessResponse(new PaginationResponse<GetUserDto>
+        {
+            Items = users.Select(MapToGetUserDto).ToList(),
+            Page = dto.Page,
+            PageSize = dto.PageSize,
+            TotalCount = totalCount
+        }, 200, null);
+
+
+    }
+
+    public async Task<BaseResponse<object>> UpdateAsync(Guid Id, UpdateUserDto dto, CancellationToken cancellationToken)
+    {
         var user = await _userReadRepository.GetByIdAsync(Id, cancellationToken);
 
         if (user is null)
         {
             return BaseResponse<object>.ErrorResponse("User not found", 404);
         }
+
+        var isAdmin = await AppRoles.CheckUserIsAdmin(Id, _userNRoleReadRepository, cancellationToken);
+
+
 
         if (!string.IsNullOrEmpty(dto.FirstName))
         {
@@ -230,7 +268,7 @@ public class UserService : IUserService
         var result = await _userWriteRepository.UpdateAsync(user, cancellationToken);
         if (!result)
         {
-            return BaseResponse<object>.ErrorResponse("An error ocurred while updating user",500);
+            return BaseResponse<object>.ErrorResponse("An error ocurred while updating user", 500);
         }
 
         return BaseResponse<object>.SuccessResponse(null, 204, null);

@@ -137,5 +137,16 @@ namespace Verimood.Warehouse.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        /// <summary>
+        /// verilen kriterlere göre kullanıcı getirir
+        /// </summary>
+        [Authorize(Roles = AppRoles.Admin)]
+        [HttpPost("search")]
+        public async Task<IActionResult> SearchAsync([FromBody] SearchFilterUserDto dto,CancellationToken cancellationToken)
+        {
+            var response = await _userService.SearchAsync(dto, cancellationToken);
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }

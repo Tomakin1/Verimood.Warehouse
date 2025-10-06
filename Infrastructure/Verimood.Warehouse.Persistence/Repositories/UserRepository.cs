@@ -24,9 +24,9 @@ public class UserRepository : IUserRepository
             var lowerSearchTerm = searchTerm.ToLower();
 
             query = query.Where(x => (x.FirstName + " " + x.LastName).ToLower().Contains(lowerSearchTerm) ||
-                                     x.FirstName.ToLower().Contains(lowerSearchTerm) ||
-                                     x.LastName.ToLower().Contains(lowerSearchTerm) ||
-                                     x.Email!.ToLower().Contains(lowerSearchTerm)
+                                      x.FirstName.ToLower().Contains(lowerSearchTerm) ||
+                                      x.LastName.ToLower().Contains(lowerSearchTerm) ||
+                                      x.Email!.ToLower().Contains(lowerSearchTerm)
             );
         }
 
@@ -37,12 +37,12 @@ public class UserRepository : IUserRepository
 
         var totalCount = await query.CountAsync(cancellationToken);
 
-        var entities = await query
+        var users = await query
         .OrderByDescending(x => x.CreatedAt)
         .Skip((page - 1) * pageSize)
         .Take(pageSize)
         .ToListAsync(cancellationToken);
 
-        return (entities, totalCount);
+        return (users, totalCount);
     }
 }
