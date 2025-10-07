@@ -11,8 +11,7 @@ public class CustomerBalanceConfiguration : IEntityTypeConfiguration<CustomerBal
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.CustomerId).IsRequired();
-        builder.Property(x => x.Debit).IsRequired().HasColumnType("decimal(18,2)");
-        builder.Property(x => x.Credit).IsRequired().HasColumnType("decimal(18,2)");
+        builder.Property(x => x.Balance).IsRequired().HasColumnType("decimal(18,2)");
         builder.Property(x => x.Description).HasMaxLength(1000);
 
 

@@ -30,8 +30,12 @@ builder.Services.AddApplication();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
-    opt.SwaggerDoc("auth", new OpenApiInfo { Title = "Authantication API", Version = "v1" });
+    opt.SwaggerDoc("auth", new OpenApiInfo { Title = "Auth API", Version = "v1" });
     opt.SwaggerDoc("user", new OpenApiInfo { Title = "User API", Version = "v1" });
+    opt.SwaggerDoc("category", new OpenApiInfo { Title = "Category API", Version = "v1" });
+    opt.SwaggerDoc("product", new OpenApiInfo { Title = "Product API", Version = "v1" });
+    opt.SwaggerDoc("stock", new OpenApiInfo { Title = "Stock API", Version = "v1" });
+    opt.SwaggerDoc("customer", new OpenApiInfo { Title = "Customer API", Version = "v1" });
 
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -83,8 +87,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(opt =>
     {
-        opt.SwaggerEndpoint("/swagger/auth/swagger.json", "Authantication API");
+        opt.SwaggerEndpoint("/swagger/auth/swagger.json", "Auth API");
         opt.SwaggerEndpoint("/swagger/user/swagger.json", "User API");
+        opt.SwaggerEndpoint("/swagger/category/swagger.json", "Category API");
+        opt.SwaggerEndpoint("/swagger/product/swagger.json", "Product API");
+        opt.SwaggerEndpoint("/swagger/stock/swagger.json", "Stock API");
+        opt.SwaggerEndpoint("/swagger/customer/swagger.json", "Customer API");
         opt.RoutePrefix = string.Empty;
     });
 }

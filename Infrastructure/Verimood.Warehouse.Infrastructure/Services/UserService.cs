@@ -37,6 +37,7 @@ public class UserService : IUserService
         _userNRoleRepository = userNRoleRepository;
         _userRepository = userRepository;
         _userNRoleReadRepository = userNRoleReadRepository;
+        
     }
 
     public async Task<BaseResponse<object>> ActivateAsync(Guid Id, CancellationToken cancellationToken)
@@ -230,7 +231,7 @@ public class UserService : IUserService
             Page = dto.Page,
             PageSize = dto.PageSize,
             TotalCount = totalCount
-        }, 200, null);
+        }, 200, $"{totalCount} users found");
 
 
     }
@@ -245,6 +246,11 @@ public class UserService : IUserService
         }
 
         var isAdmin = await AppRoles.CheckUserIsAdmin(Id, _userNRoleReadRepository, cancellationToken);
+
+        if (isAdmin)
+        {
+            return BaseResponse<object>.ErrorResponse("You can not update admin user", 403);
+        }
 
 
 

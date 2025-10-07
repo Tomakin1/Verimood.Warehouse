@@ -15,6 +15,7 @@ namespace Verimood.Warehouse.Persistence.TypeConfigurations
             builder.Property(x => x.Email).HasMaxLength(200);
             builder.Property(x => x.PhoneNumber).HasMaxLength(50);
             builder.Property(x => x.Address).HasMaxLength(1000);
+            builder.Property(x => x.TotalBalance).IsRequired().HasColumnType("decimal(18,2)");
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
             builder.HasMany(x => x.Sales).WithOne(x => x.Customer).HasForeignKey(x => x.CustomerId).OnDelete(DeleteBehavior.NoAction);

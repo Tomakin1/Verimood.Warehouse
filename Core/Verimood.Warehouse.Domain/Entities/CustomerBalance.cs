@@ -3,11 +3,9 @@
 public class CustomerBalance
 {
     public Guid Id { get; set; } 
-    public Guid CustomerId { get; set; } 
+    public Guid CustomerId { get; set; }
 
-    public decimal Debit { get; set; } = 0; 
-    public decimal Credit { get; set; } = 0;    
-    public decimal Balance => Credit - Debit; 
+    public decimal Balance { get; set; } // Satıştan para alındıysa + Borç ile verildiyse -
 
     public string? Description { get; set; } 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
