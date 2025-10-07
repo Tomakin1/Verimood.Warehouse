@@ -2,6 +2,7 @@
 using Verimood.Warehouse.Application.Services.Auth.Interfaces;
 using Verimood.Warehouse.Application.Services.Category.Interfaces;
 using Verimood.Warehouse.Application.Services.Customer.Interfaces;
+using Verimood.Warehouse.Application.Services.CustomerBalance.Interfaces;
 using Verimood.Warehouse.Application.Services.Product.Interfaces;
 using Verimood.Warehouse.Application.Services.Stock.Interfaces;
 using Verimood.Warehouse.Application.Services.User.Interfaces;
@@ -30,6 +31,7 @@ public static class Registration
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IStockService, StockService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<ICustomerBalanceService, CustomerBalanceService>();
 
 
         return services;

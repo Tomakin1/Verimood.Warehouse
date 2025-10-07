@@ -63,12 +63,12 @@ public class CustomerService : ICustomerService
     public async Task<BaseResponse<PaginationResponse<GetCustomerDto>>> GetAllPaginatedAsync(PaginationRequest request, CancellationToken cancellationToken)
     {
         var response = await _customerReadRepository.GetAllPaginatedAsync(
-                   cancellationToken,
-                   null,
-                   x => x.OrderByDescending(x => x.CreatedAt),
-                   request.Page,
-                   request.PageSize,
-                   null);
+            cancellationToken,
+            null,
+            x => x.OrderByDescending(x => x.CreatedAt),
+            request.Page,
+            request.PageSize,
+            null);
 
         var customers = response.entities;
         var totalCount = response.totalCount;

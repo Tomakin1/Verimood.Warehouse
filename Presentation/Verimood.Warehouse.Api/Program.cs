@@ -36,6 +36,7 @@ builder.Services.AddSwaggerGen(opt =>
     opt.SwaggerDoc("product", new OpenApiInfo { Title = "Product API", Version = "v1" });
     opt.SwaggerDoc("stock", new OpenApiInfo { Title = "Stock API", Version = "v1" });
     opt.SwaggerDoc("customer", new OpenApiInfo { Title = "Customer API", Version = "v1" });
+    opt.SwaggerDoc("customerBalance", new OpenApiInfo { Title = "Customer Balance API", Version = "v1" });
 
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -93,6 +94,7 @@ if (app.Environment.IsDevelopment())
         opt.SwaggerEndpoint("/swagger/product/swagger.json", "Product API");
         opt.SwaggerEndpoint("/swagger/stock/swagger.json", "Stock API");
         opt.SwaggerEndpoint("/swagger/customer/swagger.json", "Customer API");
+        opt.SwaggerEndpoint("/swagger/customerBalance/swagger.json", "Customer Balance API");
         opt.RoutePrefix = string.Empty;
     });
 }
