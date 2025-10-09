@@ -86,8 +86,7 @@ app.ConfigureExceptionHandling();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI(opt =>
     {
@@ -103,7 +102,7 @@ if (app.Environment.IsDevelopment())
         opt.SwaggerEndpoint("/swagger/role/swagger.json", "Role API");
         opt.RoutePrefix = string.Empty;
     });
-}
+
 
 app.UsePersistenceLayer();
 app.UsePersistenceLayer();

@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Verimood.Warehouse.Domain.Entities;
 using Verimood.Warehouse.Domain.Repositories;
 using Verimood.Warehouse.Domain.Uow;
 using Verimood.Warehouse.Persistence.Context;
 using Verimood.Warehouse.Persistence.Initialization;
 using Verimood.Warehouse.Persistence.Repositories;
-using Verimood.Warehouse.Persistence.Settings;
 using Verimood.Warehouse.Persistence.Uow;
 
 namespace Verimood.Warehouse.Persistence;
@@ -21,7 +20,6 @@ public static class Registration
     public static IServiceCollection AddPersistence(this IServiceCollection services) // Gerekli methodların eklenmesi
     {
         AddCorsPolicy(services);
-        AddDatabaseSettings(services);
         AddDatabaseContext(services);
         AddIdentity(services);
         AddRepositories(services);
@@ -38,24 +36,14 @@ public static class Registration
         return services;
     }
 
-    private static IServiceCollection AddDatabaseSettings(this IServiceCollection services)
-    {
-        services
-        .AddOptions<DatabaseSettings>()
-        .BindConfiguration(nameof(DatabaseSettings))
-        .ValidateDataAnnotations()
-        .ValidateOnStart();
-        services.AddTransient(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-
-        return services;
-    } // Konfigurasyon dosyasından bilgilerin bind edildiği modelin DI Container'a eklenmesi
 
     private static IServiceCollection AddDatabaseContext(this IServiceCollection services)
     {
         services.AddDbContext<ApplicationDbContext>((sp, context) =>
         {
-            var dbSettings = sp.GetRequiredService<DatabaseSettings>();
-            context.UseDatabase(dbSettings.ConnectionString);
+            var configuration = sp.GetRequiredService<IConfiguration>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            context.UseDatabase(connectionString);
         });
 
         return services;

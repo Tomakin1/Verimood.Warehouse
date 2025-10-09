@@ -1,24 +1,25 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Verimood.Warehouse.Domain.Entities;
-using Verimood.Warehouse.Persistence.Settings;
 
 namespace Verimood.Warehouse.Persistence.Context;
 
-public class ApplicationDbContext : IdentityDbContext<User,Role,Guid,IdentityUserClaim<Guid>,UserNRole,IdentityUserLogin<Guid>,IdentityRoleClaim<Guid>,IdentityUserToken<Guid>>
+public class ApplicationDbContext : IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>, UserNRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
 {
     private readonly IHostEnvironment _env;
-    private readonly DatabaseSettings _dbSettings;
+    private readonly IConfiguration _configuration;
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> opt,
-        IHostEnvironment env,
-        IOptions<DatabaseSettings> dbSettings) : base(opt)
+        IConfiguration configuration,
+        IHostEnvironment env) : base(opt)
     {
         _env = env;
-        _dbSettings = dbSettings.Value;
+        _configuration = configuration;
+
     }
 
     public DbSet<Category> Categories { get; set; }
@@ -40,10 +41,10 @@ public class ApplicationDbContext : IdentityDbContext<User,Role,Guid,IdentityUse
     {
         if (_env.IsDevelopment())
         {
-            optionsBuilder.EnableSensitiveDataLogging();    
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
-        optionsBuilder.UseDatabase(_dbSettings.ConnectionString);
+        optionsBuilder.UseDatabase(_configuration.GetConnectionString("DefaultConnection")!);
 
         base.OnConfiguring(optionsBuilder);
 

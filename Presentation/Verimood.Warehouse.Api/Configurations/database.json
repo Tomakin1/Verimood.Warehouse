@@ -1,6 +1,0 @@
-{
-  "DatabaseSettings": {
-    "ConnectionString": "Host=verimooddb.cze4coq4ckbw.eu-central-1.rds.amazonaws.com;Port=5432;Database=verimooddb;Username=postgres;Password=VeriMood2024!AWS;"
-
-  }
-}
