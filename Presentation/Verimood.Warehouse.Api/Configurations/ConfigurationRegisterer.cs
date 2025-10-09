@@ -10,8 +10,6 @@ public static class ConfigurationRegisterer
         var env = builder.Environment;
 
         config.AddJsonFile("appsettings", env.EnvironmentName)
-              .AddJsonFile("database", env.EnvironmentName)
-              .AddJsonFile("logger", env.EnvironmentName)
               .AddJsonFile("security", env.EnvironmentName);
 
 
