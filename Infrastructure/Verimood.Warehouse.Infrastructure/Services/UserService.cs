@@ -18,6 +18,7 @@ public class UserService : IUserService
     private readonly IReadRepository<UserNRole> _userNRoleRepository;
     private readonly IUserRepository _userRepository;
     private readonly IReadRepository<UserNRole> _userNRoleReadRepository;
+    private readonly RoleManager<Role> _roleManager;
 
     public UserService(
         IWriteRepository<User> userWriteRepository,
@@ -26,7 +27,8 @@ public class UserService : IUserService
         UserManager<User> userManager,
         IReadRepository<UserNRole> userNRoleRepository,
         IUserRepository userRepository,
-        IReadRepository<UserNRole> userNRoleReadRepository
+        IReadRepository<UserNRole> userNRoleReadRepository,
+        RoleManager<Role> roleManager
 
         )
     {
@@ -37,7 +39,8 @@ public class UserService : IUserService
         _userNRoleRepository = userNRoleRepository;
         _userRepository = userRepository;
         _userNRoleReadRepository = userNRoleReadRepository;
-        
+        _roleManager = roleManager;
+
     }
 
     public async Task<BaseResponse<object>> ActivateAsync(Guid Id, CancellationToken cancellationToken)
@@ -61,6 +64,28 @@ public class UserService : IUserService
 
         return BaseResponse<object>.SuccessResponse(null, 204, null);
     }
+
+    public async Task<BaseResponse<object>> AssignRoleAsync(AssignRoleDto dto, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+        if (user == null)
+            return BaseResponse<object>.ErrorResponse("User not found.", 404);
+
+        var role = await _roleManager.FindByIdAsync(dto.RoleId.ToString());
+        if (role == null)
+            return BaseResponse<object>.ErrorResponse("Role not found.", 404);
+
+        if (await _userManager.IsInRoleAsync(user, role.Name))
+            return BaseResponse<object>.ErrorResponse("User is already assigned to this role.", 400);
+
+        var result = await _userManager.AddToRoleAsync(user, role.Name);
+
+        if (!result.Succeeded)
+            return BaseResponse<object>.ErrorResponse("An error occurred while assigning the role.", 500);
+
+        return BaseResponse<object>.SuccessResponse(null, 204, "Role assigned successfully.");
+    }
+
 
     public async Task<BaseResponse<Guid>> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken)
     {
@@ -200,6 +225,28 @@ public class UserService : IUserService
 
         }).ToList(), 200);
     }
+
+    public async Task<BaseResponse<object>> RemoveRoleAsync(AssignRoleDto dto, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+        if (user == null)
+            return BaseResponse<object>.ErrorResponse("User not found.", 404);
+
+        var role = await _roleManager.FindByIdAsync(dto.RoleId.ToString());
+        if (role == null)
+            return BaseResponse<object>.ErrorResponse("Role not found.", 404);
+
+        if (!await _userManager.IsInRoleAsync(user, role.Name))
+            return BaseResponse<object>.ErrorResponse("User is not assigned to this role.", 400);
+
+        var result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+
+        if (!result.Succeeded)
+            return BaseResponse<object>.ErrorResponse("An error occurred while removing the role.", 500);
+
+        return BaseResponse<object>.SuccessResponse(null, 204, "Role removed successfully.");
+    }
+
 
     public async Task<BaseResponse<PaginationResponse<GetUserDto>>> SearchAsync(SearchFilterUserDto dto, CancellationToken cancellationToken)
     {

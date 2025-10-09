@@ -14,5 +14,7 @@ public interface IUserService
     Task<BaseResponse<object>> ActivateAsync(Guid Id, CancellationToken cancellationToken); // Admin tarafından kullanıcı active etme
     Task<BaseResponse<object>> DeactivateAsync(Guid Id, CancellationToken cancellationToken); // Admin tarafından kullanıcı deactive etme
     Task<BaseResponse<List<GetRoleDto>>> GetRolesAsync(Guid Id, CancellationToken cancellationToken); // Sistemdeki çalışanın rollerini getirme
+    Task<BaseResponse<object>> AssignRoleAsync(AssignRoleDto dto, CancellationToken cancellationToken); // Admin tarafından kullanıcıya rol atama
+    Task<BaseResponse<object>> RemoveRoleAsync(AssignRoleDto dto, CancellationToken cancellationToken); // Admin tarafından kullanıcıdan rol kaldırma
     Task<BaseResponse<PaginationResponse<GetUserDto>>> SearchAsync(SearchFilterUserDto dto, CancellationToken cancellationToken);
 }

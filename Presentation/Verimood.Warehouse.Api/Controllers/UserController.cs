@@ -148,5 +148,27 @@ namespace Verimood.Warehouse.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        /// <summary>
+        /// Kullanıcıya rol atar
+        /// </summary>
+        [Authorize(Roles = AppRoles.Admin)]
+        [HttpPost("assign-role")]
+        public async Task<IActionResult> AssignRoleAsync([FromBody] AssignRoleDto dto, CancellationToken cancellationToken)
+        {
+            var response = await _userService.AssignRoleAsync(dto, cancellationToken);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        /// <summary>
+        /// Atanan rolü kullanıcıdan kaldırır
+        /// </summary>
+        [Authorize(Roles = AppRoles.Admin)]
+        [HttpPost("remove-role")]
+        public async Task<IActionResult> RemoveRoleAsync([FromBody] AssignRoleDto dto, CancellationToken cancellationToken)
+        {
+            var response = await _userService.RemoveRoleAsync(dto, cancellationToken);
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }

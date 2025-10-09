@@ -100,12 +100,12 @@ public class CustomerBalanceService : ICustomerBalanceService
     public async Task<BaseResponse<PaginationResponse<GetCustomerBalanceDto>>> GetAllPaginatedAsync(PaginationRequest request, CancellationToken cancellationToken)
     {
         var response = await _customerBalanceReadRepository.GetAllPaginatedAsync(
-                   cancellationToken,
-                   null,
-                   x => x.OrderByDescending(x => x.CreatedAt),
-                   request.Page,
-                   request.PageSize,
-                   x => x.Customer);
+            cancellationToken,
+            null,
+            x => x.OrderByDescending(x => x.CreatedAt),
+            request.Page,
+            request.PageSize,
+            x => x.Customer);
 
         var customerBalances = response.entities;
         var totalCount = response.totalCount;
@@ -129,12 +129,12 @@ public class CustomerBalanceService : ICustomerBalanceService
     public async Task<BaseResponse<PaginationResponse<GetCustomerBalanceDto>>> GetByCustomerIdAsync(Guid customerId, PaginationRequest request, CancellationToken cancellationToken)
     {
         var response = await _customerBalanceReadRepository.GetAllPaginatedAsync(
-                   cancellationToken,
-                   [x => x.CustomerId == customerId],
-                   x => x.OrderByDescending(x => x.CreatedAt),
-                   request.Page,
-                   request.PageSize,
-                   x => x.Customer);
+            cancellationToken,
+            [x => x.CustomerId == customerId],
+            x => x.OrderByDescending(x => x.CreatedAt),
+            request.Page,
+            request.PageSize,
+            x => x.Customer);
 
         var customerBalances = response.entities;
         var totalCount = response.totalCount;
@@ -169,38 +169,50 @@ public class CustomerBalanceService : ICustomerBalanceService
 
     public async Task<BaseResponse<object>> UpdateAsync(Guid Id, UpdateCustomerBalanceDto dto, CancellationToken cancellationToken)
     {
-        var customerBalance = await _customerBalanceReadRepository.GetByIdAsync(Id, cancellationToken, x => x.Customer);
+        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-        if (customerBalance is null)
+        try
         {
-            return BaseResponse<object>.ErrorResponse("Customer balance not found", 404);
-        }
+            var customerBalance = await _customerBalanceReadRepository.GetByIdAsync(Id, cancellationToken, x => x.Customer);
 
-        if (dto.Balance.HasValue)
-        {
-            customerBalance.Customer.TotalBalance -= customerBalance.Balance;
-            customerBalance.Balance = dto.Balance.Value;
-            customerBalance.Customer.TotalBalance += dto.Balance.Value;
-
-            var customerResult = await _customerWriteRepository.UpdateAsync(customerBalance.Customer, cancellationToken);
-            if (!customerResult)
+            if (customerBalance is null)
             {
-                return BaseResponse<object>.ErrorResponse("An error occurred while updating customer total balance", 500);
+                return BaseResponse<object>.ErrorResponse("Customer balance not found", 404);
             }
 
+            if (dto.Balance.HasValue)
+            {
+                customerBalance.Customer.TotalBalance -= customerBalance.Balance;
+                customerBalance.Balance = dto.Balance.Value;
+                customerBalance.Customer.TotalBalance += dto.Balance.Value;
+
+                var customerResult = await _customerWriteRepository.UpdateAsync(customerBalance.Customer, cancellationToken);
+                if (!customerResult)
+                {
+                    return BaseResponse<object>.ErrorResponse("An error occurred while updating customer total balance", 500);
+                }
+
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Description))
+                customerBalance.Description = dto.Description;
+
+            var result = await _customerBalanceWriteRepository.UpdateAsync(customerBalance, cancellationToken);
+
+            if (!result)
+            {
+                return BaseResponse<object>.ErrorResponse("An error occurred while updating customer balance", 500);
+            }
+
+            await transaction.CommitAsync(cancellationToken);
+            return BaseResponse<object>.SuccessResponse(null, 204, "Customer balance updated successfully");
         }
-
-        if (!string.IsNullOrWhiteSpace(dto.Description))
-            customerBalance.Description = dto.Description;
-
-        var result = await _customerBalanceWriteRepository.UpdateAsync(customerBalance, cancellationToken);
-
-        if (!result)
+        catch (Exception ex)
         {
-            return BaseResponse<object>.ErrorResponse("An error occurred while updating customer balance", 500);
+            await transaction.RollbackAsync(cancellationToken);
+            return BaseResponse<object>.ErrorResponse("An error occurred: " + ex.Message, 500);
         }
 
-        return BaseResponse<object>.SuccessResponse(null, 204, "Customer balance updated successfully");
     }
 
     private GetCustomerBalanceDto MapToGetCustomerBalanceDto(CustomerBalance customerBalance)

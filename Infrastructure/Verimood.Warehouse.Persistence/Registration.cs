@@ -29,7 +29,7 @@ public static class Registration
         return services;
     }
 
-    private static IServiceCollection AddRepositories(this IServiceCollection services) // Repository'leri DI Container'a Eklenmesi
+    private static IServiceCollection AddRepositories(this IServiceCollection services) // Repository'lerin DI Container'a Eklenmesi
     {
         services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));

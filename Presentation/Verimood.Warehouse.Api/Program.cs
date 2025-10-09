@@ -22,8 +22,8 @@ builder.Host.UseSerilog((_, serilogConfig) =>
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddPersistence();      
-builder.Services.AddInfrastructure();   
+builder.Services.AddPersistence();
+builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
 
 
@@ -37,6 +37,9 @@ builder.Services.AddSwaggerGen(opt =>
     opt.SwaggerDoc("stock", new OpenApiInfo { Title = "Stock API", Version = "v1" });
     opt.SwaggerDoc("customer", new OpenApiInfo { Title = "Customer API", Version = "v1" });
     opt.SwaggerDoc("customerBalance", new OpenApiInfo { Title = "Customer Balance API", Version = "v1" });
+    opt.SwaggerDoc("sale", new OpenApiInfo { Title = "Sale API", Version = "v1" });
+    opt.SwaggerDoc("saleItem", new OpenApiInfo { Title = "Sale Item API", Version = "v1" });
+    opt.SwaggerDoc("role", new OpenApiInfo { Title = "Role API", Version = "v1" });
 
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -95,10 +98,14 @@ if (app.Environment.IsDevelopment())
         opt.SwaggerEndpoint("/swagger/stock/swagger.json", "Stock API");
         opt.SwaggerEndpoint("/swagger/customer/swagger.json", "Customer API");
         opt.SwaggerEndpoint("/swagger/customerBalance/swagger.json", "Customer Balance API");
+        opt.SwaggerEndpoint("/swagger/sale/swagger.json", "Sale API");
+        opt.SwaggerEndpoint("/swagger/saleItem/swagger.json", "Sale Item API");
+        opt.SwaggerEndpoint("/swagger/role/swagger.json", "Role API");
         opt.RoutePrefix = string.Empty;
     });
 }
 
+app.UsePersistenceLayer();
 app.UsePersistenceLayer();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -106,5 +113,5 @@ app.UseAuthorization();
 
 
 app.MapControllers();
- 
+
 app.Run();
