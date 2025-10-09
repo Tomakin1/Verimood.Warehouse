@@ -91,7 +91,7 @@ public static class Registration
 
     internal static DbContextOptionsBuilder UseDatabase(this DbContextOptionsBuilder builder, string connectionString)
     {
-        return builder.UseSqlServer(connectionString);
+        return builder.UseNpgsql(connectionString);
 
     } // Database bağlantısının sağlandığı nokta
 

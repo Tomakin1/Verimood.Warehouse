@@ -10,7 +10,7 @@ public class SaleItem
     public decimal UnitPrice { get; set; }
     public decimal TotalPrice => Quantity * UnitPrice;
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public Sale Sale { get; set; } = default!;
     public Product Product { get; set; } = default!;

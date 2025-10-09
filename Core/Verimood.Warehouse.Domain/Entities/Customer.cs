@@ -11,7 +11,7 @@ public class Customer
     public decimal TotalBalance { get; set; }  // customer balance kaydı buraya yazılacak borç ise -ye düşecek borç ödenince manuel total balance güncellenecek
 
     public bool IsActive { get; set; } = true;
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<Sale>? Sales { get; set; }
     public ICollection<CustomerBalance>? CustomerBalances { get; set; }

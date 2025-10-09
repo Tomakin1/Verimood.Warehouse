@@ -6,7 +6,7 @@ public class Sale
     public Guid CustomerId { get; set; } 
     public Guid UserId { get; set; } 
 
-    public DateTime SaleDate { get; set; } = DateTime.Now; 
+    public DateTime SaleDate { get; set; } = DateTime.UtcNow; 
     public decimal TotalAmount { get; set; }
 
     public User User { get; set; } = default!; 

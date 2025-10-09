@@ -1,0 +1,55 @@
+{
+  "family": "verimood-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [ "FARGATE" ],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::485394812098:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::485394812098:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "verimood-container",
+      "image": "485394812098.dkr.ecr.eu-central-1.amazonaws.com/verimood-warehouse:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "environment": [
+        {
+          "name": "ASPNETCORE_ENVIRONMENT",
+          "value": "Production"
+        },
+        {
+          "name": "ASPNETCORE_URLS",
+          "value": "http://+:80"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "ConnectionStrings__DefaultConnection",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:485394812098:secret:verimood/db-connection-7xozEd:ConnectionString::"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/verimood",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": [ "CMD-SHELL", "curl -f http://localhost/health || exit 1" ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ]
+}

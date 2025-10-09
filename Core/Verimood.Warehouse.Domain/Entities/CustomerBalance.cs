@@ -8,7 +8,7 @@ public class CustomerBalance
     public decimal Balance { get; set; } // Satıştan para alındıysa + Borç ile verildiyse -
 
     public string? Description { get; set; } 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public Customer Customer { get; set; } = default!;
 

@@ -68,7 +68,7 @@ public class UserAccountService : IUserAccountService
 
 
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_jwtSettings.RefreshTokenExpirationInDays > 0 ? _jwtSettings.RefreshTokenExpirationInDays : 7);
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays > 0 ? _jwtSettings.RefreshTokenExpirationInDays : 7);
         var result = await _userManager.UpdateAsync(user);
 
         if (!result.Succeeded)

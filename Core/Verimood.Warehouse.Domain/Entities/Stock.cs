@@ -8,7 +8,7 @@ public class Stock
 
     public int Quantity { get; set; }
     public string? Description { get; set; }
-    public DateTime TransactionDate { get; set; } = DateTime.Now;
+    public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
     public User? User { get; set; }
     public Product Product { get; set; } = default!;
