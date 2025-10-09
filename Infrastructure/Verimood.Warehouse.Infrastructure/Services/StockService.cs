@@ -20,6 +20,7 @@ public class StockService : IStockService
     private readonly IWriteRepository<Product> _productWriteRepository;
     private readonly IUnitOfWork _unitOfWork;
 
+
     public StockService(
         IReadRepository<Stock> stockReadRepository,
         IWriteRepository<Stock> stockWriteRepository,
