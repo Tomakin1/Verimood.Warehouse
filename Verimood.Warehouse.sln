@@ -32,6 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".aws", ".aws", "{FEF3E0CF-5
 		task-definition.json = task-definition.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{68853946-29B9-43EF-947A-5821D997D3E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{271AF4E8-8A43-4BE0-93E6-09C0CD07C6CC}"
+	ProjectSection(SolutionItems) = preProject
+		aws-deploy.yml = aws-deploy.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +75,7 @@ Global
 		{E73BA5FE-7EC0-47A4-842F-73D2216A3E68} = {A51D755F-170C-4F70-B46A-536E31E4D20B}
 		{11486BBE-0DBB-41B9-A305-6DBEC420434C} = {A51D755F-170C-4F70-B46A-536E31E4D20B}
 		{D7F2F431-6EB6-434D-B97D-52B1755B58D5} = {D0F57EDC-ED79-4C2D-A734-AE5A1944C4C7}
+		{271AF4E8-8A43-4BE0-93E6-09C0CD07C6CC} = {68853946-29B9-43EF-947A-5821D997D3E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86521739-663E-48B1-B09B-DE3A0B7DEB71}
