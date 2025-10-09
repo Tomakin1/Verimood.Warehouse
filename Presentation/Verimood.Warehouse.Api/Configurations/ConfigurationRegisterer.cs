@@ -20,7 +20,7 @@ public static class ConfigurationRegisterer
 
     private static ConfigurationManager AddJsonFile(this ConfigurationManager manager, string file, string? environment = null)
     {
-        manager.AddJsonFile($"{configurationDirectory}/{file}.json", optional: false, reloadOnChange: false);
+        manager.AddJsonFile($"{configurationDirectory}/{file}.json", optional: true, reloadOnChange: false);
 
         if (environment != null)
         {
