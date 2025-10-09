@@ -34,7 +34,7 @@ namespace Verimood.Warehouse.API.Controllers
         /// Belirli bir satış kalemini günceller
         /// </summary>
         [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Employee}")]
-        [HttpPut("{id:guid}")]
+        [HttpPost("update/{id:guid}")]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateSaleItemDto dto, CancellationToken cancellationToken)
         {
             var response = await _saleItemService.UpdateAsync(id, dto, cancellationToken);
@@ -78,7 +78,7 @@ namespace Verimood.Warehouse.API.Controllers
         /// Belirli bir satışa (Sale) ait satış kalemlerini sayfalandırılmış şekilde getirir
         /// </summary>
         [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Employee}")]
-        [HttpPost("get-by-sale/{saleId:guid}")]
+        [HttpPost("by-sale/{saleId:guid}")]
         public async Task<IActionResult> GetBySaleIdAsync(Guid saleId, [FromBody] PaginationRequest request, CancellationToken cancellationToken)
         {
             var response = await _saleItemService.GetBySaleId(saleId, request, cancellationToken);

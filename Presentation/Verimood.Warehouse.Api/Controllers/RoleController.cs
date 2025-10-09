@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Verimood.Warehouse.Application.Helpers;
 using Verimood.Warehouse.Application.Services.Auth.Settings;
 using Verimood.Warehouse.Application.Services.Role.Interfaces;
 using Verimood.Warehouse.Application.Services.Role.Models;
@@ -34,7 +33,7 @@ namespace Verimood.Warehouse.API.Controllers
         /// Rolü günceller
         /// </summary>
         [Authorize(Roles = AppRoles.Admin)]
-        [HttpPut("{id:guid}")]
+        [HttpPost("update/{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRoleDto dto, CancellationToken cancellationToken)
         {
             var response = await _roleService.UpdateAsync(id, dto, cancellationToken);
@@ -67,7 +66,7 @@ namespace Verimood.Warehouse.API.Controllers
         /// Tüm rolleri getirir (sayfalama olmadan)
         /// </summary>
         [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Employee}")]
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
         {
             var response = await _roleService.GetAllAsync(cancellationToken);
