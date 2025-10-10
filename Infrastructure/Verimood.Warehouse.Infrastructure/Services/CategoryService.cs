@@ -175,6 +175,7 @@ public class CategoryService : ICategoryService
             Name = category.Name,
             Description = category.Description,
             CreatedAt = category.CreatedAt,
+            IsActive = category.IsActive
         };
     }
 }
