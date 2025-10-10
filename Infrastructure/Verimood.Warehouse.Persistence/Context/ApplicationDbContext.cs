@@ -19,7 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid, Identity
         IHostEnvironment env) : base(opt)
     {
         _env = env;
-        _configuration = configuration;
 
     }
 
