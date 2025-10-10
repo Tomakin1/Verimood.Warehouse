@@ -6,8 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-	<IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
-	<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+	<!-- <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
+	<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel> -->
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

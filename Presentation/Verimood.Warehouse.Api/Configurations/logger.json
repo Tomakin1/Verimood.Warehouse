@@ -23,7 +23,7 @@
       {
         "Name": "PostgreSQL",
         "Args": {
-          "ConnectionString": "Host=localhost;Port=5432;Database=warehouse_db;Username=admin;Password=Admin123!",
+          "ConnectionString": "Host=31.40.197.73;Port=5432;Database=warehouse_db;Username=postgres;Password=Admin123!;Pooling=true;Minimum Pool Size=0;Maximum Pool Size=100;",
           "TableName": "_log",
           "autoCreateSqlTable": true,
           "storeTimestampInUtc": true

@@ -17,13 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Persistence", "Infrastructure\Verimood.Warehouse.Persistence\Verimood.Warehouse.Persistence.csproj", "{11486BBE-0DBB-41B9-A305-6DBEC420434C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Api", "Presentation\Verimood.Warehouse.Api\Verimood.Warehouse.Api.csproj", "{D7F2F431-6EB6-434D-B97D-52B1755B58D5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{2D361C04-B0BC-4769-8BBF-330F6BE3B0BB}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yaml = docker-compose.yaml
 		Migrations.Txt = Migrations.Txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Api", "Presentation\Verimood.Warehouse.Api\Verimood.Warehouse.Api.csproj", "{8FF4F4BF-92CC-FACD-DF37-38293DEE2C0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{11486BBE-0DBB-41B9-A305-6DBEC420434C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11486BBE-0DBB-41B9-A305-6DBEC420434C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11486BBE-0DBB-41B9-A305-6DBEC420434C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7F2F431-6EB6-434D-B97D-52B1755B58D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7F2F431-6EB6-434D-B97D-52B1755B58D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7F2F431-6EB6-434D-B97D-52B1755B58D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7F2F431-6EB6-434D-B97D-52B1755B58D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF4F4BF-92CC-FACD-DF37-38293DEE2C0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF4F4BF-92CC-FACD-DF37-38293DEE2C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF4F4BF-92CC-FACD-DF37-38293DEE2C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF4F4BF-92CC-FACD-DF37-38293DEE2C0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,7 +60,7 @@ Global
 		{3A4DE84D-4595-4D99-AB94-2493D3923204} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{E73BA5FE-7EC0-47A4-842F-73D2216A3E68} = {A51D755F-170C-4F70-B46A-536E31E4D20B}
 		{11486BBE-0DBB-41B9-A305-6DBEC420434C} = {A51D755F-170C-4F70-B46A-536E31E4D20B}
-		{D7F2F431-6EB6-434D-B97D-52B1755B58D5} = {D0F57EDC-ED79-4C2D-A734-AE5A1944C4C7}
+		{8FF4F4BF-92CC-FACD-DF37-38293DEE2C0A} = {D0F57EDC-ED79-4C2D-A734-AE5A1944C4C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86521739-663E-48B1-B09B-DE3A0B7DEB71}
