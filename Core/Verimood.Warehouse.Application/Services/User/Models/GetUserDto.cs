@@ -7,5 +7,6 @@ public class GetUserDto
     public string LastName { get; set; } = default!;
     public string Email { get; set; } = default!;
     public string? PhoneNumber { get; set; }
+    public bool IsActive { get; set; }
 
 }
