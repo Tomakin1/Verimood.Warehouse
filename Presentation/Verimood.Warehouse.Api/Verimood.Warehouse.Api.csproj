@@ -9,6 +9,12 @@
 	<!-- <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
 	<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel> -->
 
+	<ItemGroup>
+		<Content Update="web.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
