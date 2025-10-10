@@ -21,9 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verimood.Warehouse.Api", "P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{2D361C04-B0BC-4769-8BBF-330F6BE3B0BB}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
 		docker-compose.yaml = docker-compose.yaml
-		Dockerfile = Dockerfile
 		Migrations.Txt = Migrations.Txt
 	EndProjectSection
 EndProject
