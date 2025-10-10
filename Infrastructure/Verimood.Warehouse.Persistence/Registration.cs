@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Verimood.Warehouse.Domain.Entities;
@@ -44,9 +43,8 @@ public static class Registration
     {
         services.AddDbContext<ApplicationDbContext>((sp, context) =>
         {
-            var configuration = sp.GetRequiredService<IConfiguration>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            context.UseDatabase(connectionString);
+            var dbSettings = sp.GetRequiredService<DatabaseSettings>();
+            context.UseDatabase(dbSettings.ConnectionString);
         });
 
         return services;
