@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Verimood.Warehouse.Domain.Entities;
 using Verimood.Warehouse.Domain.Repositories;
 using Verimood.Warehouse.Domain.Uow;
 using Verimood.Warehouse.Persistence.Context;
 using Verimood.Warehouse.Persistence.Initialization;
 using Verimood.Warehouse.Persistence.Repositories;
+using Verimood.Warehouse.Persistence.Settings;
 using Verimood.Warehouse.Persistence.Uow;
 
 namespace Verimood.Warehouse.Persistence;
@@ -20,6 +22,7 @@ public static class Registration
     public static IServiceCollection AddPersistence(this IServiceCollection services) // Gerekli methodların eklenmesi
     {
         AddCorsPolicy(services);
+        AddDatabaseSettings(services);
         AddDatabaseContext(services);
         AddIdentity(services);
         AddRepositories(services);
@@ -108,6 +111,18 @@ public static class Registration
 
         return app;
     } // Persistence katmanında kullanılan Middleware'lar
+
+    private static IServiceCollection AddDatabaseSettings(this IServiceCollection services)
+    {
+        services
+        .AddOptions<DatabaseSettings>()
+        .BindConfiguration(nameof(DatabaseSettings))
+        .ValidateDataAnnotations()
+        .ValidateOnStart();
+        services.AddTransient(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+
+        return services;
+    } // Konfigurasyon dosyasından bilgilerin bind edildiği modelin DI Container'a eklenmesi
 
     private static IServiceCollection AddDatabaseInitializerProccess(this IServiceCollection services)
     {

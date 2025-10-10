@@ -9,7 +9,9 @@ public static class ConfigurationRegisterer
         var config = builder.Configuration;
         var env = builder.Environment;
 
-        config.AddJsonFile("appsettings", env.EnvironmentName)
+        config.AddJsonFile("appsettings", env.EnvironmentName);
+        config.AddJsonFile("logger", env.EnvironmentName);
+        config.AddJsonFile("database", env.EnvironmentName)
               .AddJsonFile("security", env.EnvironmentName);
 
 
@@ -20,7 +22,7 @@ public static class ConfigurationRegisterer
 
     private static ConfigurationManager AddJsonFile(this ConfigurationManager manager, string file, string? environment = null)
     {
-        manager.AddJsonFile($"{configurationDirectory}/{file}.json", optional: true, reloadOnChange: false);
+        manager.AddJsonFile($"{configurationDirectory}/{file}.json", optional: false, reloadOnChange: false);
 
         if (environment != null)
         {
